@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import type { Request, Response } from 'express';
+import { authMiddleware } from './middlewares/authenticate';
 
 dotenv.config();
 
@@ -11,6 +12,10 @@ app.use(express.json());
 
 app.get('/', (req: Request, res: Response) => {
     res.send('HOMEzass');
+});
+
+app.get('/data', authMiddleware, (req: Request, res: Response) => {
+    res.json({ data: 'DATA' });
 });
 
 app.listen(PORT, () => {

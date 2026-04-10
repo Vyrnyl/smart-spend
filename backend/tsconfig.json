@@ -44,5 +44,5 @@
     "skipLibCheck": true,
   },
     "include": ["src/**/*"],
-    "exclude": ["prisma", "node_modules"]
+    "exclude": ["node_modules"]
 }
