@@ -14,7 +14,7 @@ export const authMiddleware = (req: CustomRequest, res: Response, next: NextFunc
   if(!authHeader || !authHeader?.startsWith("Bearer ")) {
     return res.status(401).json({ message: "Unauthorized"})
   }
-
+  
   const token = authHeader.split(" ")[1];
 
   try {

@@ -7,7 +7,7 @@ import { asyncHandler } from "../utils/asyncHandler";
 export const registerUser = asyncHandler(
   async (req: Request, res: Response) => {
     const result = authSchema.RegisterSchema.safeParse(req.body);
-    console.log(result)
+    
     if (!result.success) {
       throw new AppError("Invalid input", 400);
     }

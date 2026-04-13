@@ -1,7 +1,8 @@
 import { prisma } from "../lib/prisma";
-import { User } from "../lib/type";
+import { Prisma } from "../generated/prisma/client";
 
-export const createUser = async (data: User) => {
+type CreateUserInput = Prisma.UserCreateInput;
+export const createUser = async (data: CreateUserInput) => {
   return prisma.user.create({
     data,
   });
