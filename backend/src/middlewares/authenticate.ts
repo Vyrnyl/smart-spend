@@ -1,28 +1,30 @@
-import dotenv from 'dotenv';
-import type { Request, Response, NextFunction } from 'express';
-import jwt, { JwtPayload } from "jsonwebtoken";
+import type { Response, NextFunction } from "express";
+import jwt from "jsonwebtoken";
+import { CustomJwtPayload, CustomRequest } from "../lib/type";
 
-dotenv.config();
 
-interface CustomRequest extends Request {
-  user?: string | JwtPayload;
-}
-
-export const authMiddleware = (req: CustomRequest, res: Response, next: NextFunction) => {
+export const authMiddleware = (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction,
+) => {
   const authHeader = req.headers.authorization;
 
-  if(!authHeader || !authHeader?.startsWith("Bearer ")) {
-    return res.status(401).json({ message: "Unauthorized"})
+  if (!authHeader || !authHeader?.startsWith("Bearer ")) {
+    return res.status(401).json({ message: "Unauthorized" });
   }
-  
+
   const token = authHeader.split(" ")[1];
 
   try {
-    const decoded = jwt.verify(token as string, process.env.AUTH_SECRET as string);
+    const decoded = jwt.verify(
+      token as string,
+      process.env.JWT_SECRET as string,
+    ) as CustomJwtPayload;
 
     req.user = decoded;
     next();
-  } catch(error) {
-    res.status(403).json({ message: "Forbidden " });
+  } catch (error) {
+    return res.status(403).json({ message: "Invalid or expired token " });
   }
-}
+};
