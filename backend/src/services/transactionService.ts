@@ -1,22 +1,8 @@
+import { CreateTransactionDTO, UpdateTransactionDTO } from "../lib/type";
 import * as transactionModel from "../models/transactionModel";
 
-type CreateTransactionDTO = {
-  type: "INCOME" | "EXPENSE";
-  amount: number;
-  description: string;
-  categoryId: string;
-  userId: string;
-};
-
-type UpdateTransactionDTO = {
-  type?: "INCOME" | "EXPENSE";
-  amount?: number;
-  description?: string;
-  categoryId?: string;
-};
-
-export const createTransaction = async (dto: CreateTransactionDTO) => {
-  return await transactionModel.createTransaction({
+export const createTransaction = (dto: CreateTransactionDTO) => {
+  return transactionModel.createTransaction({
     type: dto.type,
     amount: dto.amount,
     description: dto.description,
@@ -25,15 +11,23 @@ export const createTransaction = async (dto: CreateTransactionDTO) => {
   });
 };
 
-export const getAllTransactions = async () => {
-  return await transactionModel.getAllTransactions();
+export const getAllTransactions = (userId: string) => {
+  return transactionModel.getAllTransactions(userId);
 };
 
-export const updateTransaction = async (
-  id: string,
+export const updateTransaction = (
+  userId: string,
+  transactionId: string,
   dto: UpdateTransactionDTO,
 ) => {
-  return await transactionModel.updateTransaction(id, {
+  return transactionModel.updateTransaction(userId, transactionId, {
     ...(dto.type !== undefined && { type: dto.type }),
+    ...(dto.amount !== undefined && { amount: dto.amount }),
+    ...(dto.description !== undefined && { description: dto.description }),
+    ...(dto.categoryId !== undefined && { category: { connect: { id: dto.categoryId} } }),
   });
 };
+
+export const deleteTransaction = (userId: string, transactionId: string) => {
+  return transactionModel.deleteTransaction(userId, transactionId);
+}

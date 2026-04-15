@@ -7,7 +7,7 @@ export const registerUser = async (data: User) => {
   const isEmailExist = await userModel.getUserByEmail(data.email);
 
   if (isEmailExist) {
-    throw new AppError("Email already exist", 401);
+    throw new AppError("Email already exist", 409);
   }
 
   const hashedPassword = await bcrypt.hash(data.password, 10);
@@ -28,9 +28,9 @@ export const loginUser = async (email: string, password: string) => {
   const DUMMY_HASH =
     "$2b$10$CwTycUXWue0Thq9StjUM0uJ8kG6Z5qX6Ch12HlbDTXhMHDLecxB2a";
   const passwordToCompare = user?.password || DUMMY_HASH;
-  const isMatch = await bcrypt.compare(password, passwordToCompare);
+  const isValidPassword  = await bcrypt.compare(password, passwordToCompare);
 
-  if (!user || !isMatch) {
+  if (!user || !isValidPassword ) {
     throw new AppError("Invalid email or password", 401);
   }
   
