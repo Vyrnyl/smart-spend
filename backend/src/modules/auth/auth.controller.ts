@@ -1,8 +1,8 @@
 import type { Request, Response, NextFunction } from "express";
-import * as authService from "../services/authService";
-import * as authSchema from "../lib/zod/authSchema";
-import AppError from "../utils/AppError";
-import { asyncHandler } from "../utils/asyncHandler";
+import * as authService from "./auth.service";
+import * as authSchema from "./authSchema";
+import { asyncHandler } from "../../utils/asyncHandler";
+import AppError from "../../utils/AppError";
 
 export const registerUser = asyncHandler(
   async (req: Request, res: Response) => {
