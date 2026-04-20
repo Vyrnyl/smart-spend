@@ -1,7 +1,7 @@
-import * as userModel from "../models/userModel";
+import { User } from "../../lib/type";
+import AppError from "../../utils/AppError";
+import * as userModel from "./auth.repository";
 import bcrypt from "bcrypt";
-import { User } from "../lib/type";
-import AppError from "../utils/AppError";
 
 export const registerUser = async (data: User) => {
   const isEmailExist = await userModel.getUserByEmail(data.email);

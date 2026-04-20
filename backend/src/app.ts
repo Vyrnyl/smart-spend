@@ -1,10 +1,10 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import type { Request, Response } from 'express';
-import { authMiddleware } from './middlewares/authenticate';
-import { errorHandler } from './middlewares/errorHandler';
-import authRoutes from './routes/authRoutes';
-import transactionRoutes from './routes/transactionRoutes';
+import { authMiddleware } from './middlewares/auth.middleware';
+import { errorHandler } from './middlewares/error.middleware';
+import authRoutes from './routes/auth.routes';
+import transactionRoutes from './routes/transaction.routes';
 
 dotenv.config();
 

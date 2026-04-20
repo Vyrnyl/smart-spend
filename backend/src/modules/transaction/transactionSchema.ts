@@ -15,5 +15,5 @@ export const UpdateTransactionSchema = z.object({
   categoryId: z.string().min(1, "Category is required").optional(),
 });
 
-export type CreateTransactionRequest = z.infer<typeof CreateTransactionSchema>;
-export type UpdateTransactionRequest = z.infer<typeof UpdateTransactionSchema>;
+export type CreateTransactionInput = z.infer<typeof CreateTransactionSchema>;
+export type UpdateTransactionInput = z.infer<typeof UpdateTransactionSchema>;

@@ -1,6 +1,6 @@
-import { Prisma } from "../generated/prisma/client";
-import { prisma } from "../lib/prisma";
-import AppError from "../utils/AppError";
+import { Prisma } from "../../generated/prisma/client";
+import { prisma } from "../../lib/prisma";
+import AppError from "../../utils/AppError";
 
 type CreateTransactionInput = Prisma.TransactionCreateInput;
 type UpdateTransactionInput = Prisma.TransactionUpdateInput;
@@ -16,8 +16,8 @@ export const getAllTransactions = (userId: string) => {
 };
 
 export const updateTransaction = async (
-  userId: string,
   transactionId: string,
+  userId: string,
   data: UpdateTransactionInput,
 ) => {
   const transaction = await prisma.transaction.findFirst({
@@ -27,12 +27,12 @@ export const updateTransaction = async (
   if (!transaction) throw new AppError("Transaction not found", 404);
 
   return prisma.transaction.update({
-    where: { id: transactionId },
+    where: { id: transactionId, userId },
     data,
   });
 };
 
-export const deleteTransaction = async (userId: string, transactionId: string) => {
+export const deleteTransaction = async (transactionId: string, userId: string) => {
   const transaction = await prisma.transaction.findFirst({
     where: { id: transactionId, userId },
   });

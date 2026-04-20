@@ -1,5 +1,6 @@
-import { prisma } from "../lib/prisma";
-import { Prisma } from "../generated/prisma/client";
+
+import { Prisma } from "../../generated/prisma/client";
+import { prisma } from "../../lib/prisma";
 
 type CreateUserInput = Prisma.UserCreateInput;
 export const createUser = async (data: CreateUserInput) => {
