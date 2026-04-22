@@ -2,7 +2,6 @@ import type { Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { CustomJwtPayload, CustomRequest } from "../lib/type";
 
-
 export const authMiddleware = (
   req: CustomRequest,
   res: Response,
@@ -21,7 +20,7 @@ export const authMiddleware = (
       token as string,
       process.env.JWT_SECRET as string,
     ) as CustomJwtPayload;
-
+    
     req.user = decoded;
     next();
   } catch (error) {

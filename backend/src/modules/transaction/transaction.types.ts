@@ -3,7 +3,6 @@ export interface CreateTransactionDTO {
   amount: number;
   description: string;
   categoryId: string;
-  userId: string;
 }
 
 export interface UpdateTransactionDTO {

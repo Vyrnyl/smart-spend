@@ -6,16 +6,18 @@ import AppError from "../../utils/AppError";
 import { CustomRequest } from "../../lib/type";
 
 export const createTransaction = asyncHandler(
-  async (req: Request, res: Response) => {
+  async (req: CustomRequest, res: Response) => {
     const result = transactionSchema.CreateTransactionSchema.safeParse(
       req.body,
     );
-
+    
     if (!result.success) {
       throw new AppError("Invalid input", 400);
     }
 
-    const transaction = await transactionService.createTransaction(result.data);
+    const userId = req.user!.userId;
+
+    const transaction = await transactionService.createTransaction(userId, result.data);
 
     return res.status(201).json({
       success: true,

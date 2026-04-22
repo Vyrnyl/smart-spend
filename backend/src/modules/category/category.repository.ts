@@ -23,5 +23,5 @@ export const updateCategory = (categoryId: string, data: UpdateCategoryInput) =>
 };
 
 export const deleteCategory = (categoryId: string) => {
-  return prisma.category.findMany({ where: { id: categoryId } }); 
+  return prisma.category.delete({ where: { id: categoryId } }); 
 }
