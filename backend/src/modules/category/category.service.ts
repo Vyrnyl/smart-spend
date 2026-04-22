@@ -35,3 +35,12 @@ export const deleteCategory = async (categoryId: string, userId: string) => {
 
   return categoryRepo.deleteCategory(categoryId);
 };
+
+export const ensureCategoryOwnership = async (
+  categoryId: string,
+  userId: string,
+) => {
+  const category = await categoryRepo.getCategoryById(categoryId, userId);
+  if (!category) throw new AppError("Category not found", 404);
+  return category;
+};

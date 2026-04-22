@@ -3,6 +3,8 @@ import * as authService from "./auth.service";
 import * as authSchema from "./authSchema";
 import { asyncHandler } from "../../utils/asyncHandler";
 import AppError from "../../utils/AppError";
+import jwt from "jsonwebtoken";
+import { CustomRequest } from "../../lib/type";
 
 export const registerUser = asyncHandler(
   async (req: Request, res: Response) => {
@@ -23,7 +25,7 @@ export const registerUser = asyncHandler(
   },
 );
 
-export const loginUser = asyncHandler(async (req: Request, res: Response) => {
+export const loginUser = asyncHandler(async (req: CustomRequest, res: Response) => {
   const result = authSchema.LoginSchema.safeParse(req.body);
 
   if (!result.success) {
@@ -33,6 +35,9 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
   const { email, password } = result.data;
 
   const user = await authService.loginUser(email, password);
+  
+  //TEST TOKEN
+  console.log(`Bearer ${jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET as string, { expiresIn: "1d", })}`);
 
   return res
     .status(200)

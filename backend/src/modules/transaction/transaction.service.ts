@@ -3,12 +3,21 @@ import {
   UpdateTransactionDTO,
 } from "./transaction.types";
 import * as transactionRepo from "./transaction.repository";
+import * as categoryService from "../category/category.service";
+import AppError from "../../utils/AppError";
 
-export const createTransaction = (dto: CreateTransactionDTO) => {
+export const createTransaction = async (
+  userId: string,
+  dto: CreateTransactionDTO,
+) => {
+  await categoryService.ensureCategoryOwnership(dto.categoryId, userId);
+
   return transactionRepo.createTransaction({
-    ...dto,
+    type: dto.type,
+    amount: dto.amount,
+    description: dto.description,
     category: { connect: { id: dto.categoryId } },
-    user: { connect: { id: dto.userId } },
+    user: { connect: { id: userId } },
   });
 };
 
@@ -16,12 +25,18 @@ export const getAllTransactions = (userId: string) => {
   return transactionRepo.getAllTransactions(userId);
 };
 
-export const updateTransaction = (
+export const updateTransaction = async (
   transactionId: string,
   userId: string,
   dto: UpdateTransactionDTO,
 ) => {
-  return transactionRepo.updateTransaction(userId, transactionId, {
+  const transaction = await transactionRepo.getTransactionById(
+    transactionId,
+    userId,
+  );
+  if (!transaction) throw new AppError("Transaction not found", 404);
+
+  return transactionRepo.updateTransaction(transactionId, {
     ...(dto.type !== undefined && { type: dto.type }),
     ...(dto.amount !== undefined && { amount: dto.amount }),
     ...(dto.description !== undefined && { description: dto.description }),
@@ -31,6 +46,15 @@ export const updateTransaction = (
   });
 };
 
-export const deleteTransaction = (transactionId: string, userId: string) => {
-  return transactionRepo.deleteTransaction(userId, transactionId);
+export const deleteTransaction = async (
+  transactionId: string,
+  userId: string,
+) => {
+  const transaction = await transactionRepo.getTransactionById(
+    transactionId,
+    userId,
+  );
+  if (!transaction) throw new AppError("Category not found", 404);
+
+  return transactionRepo.deleteTransaction(transactionId);
 };

@@ -4,6 +4,7 @@ import * as categoryService from "./category.service";
 import * as categorySchema from "./category.schema";
 import AppError from "../../utils/AppError";
 import { CustomRequest } from "../../lib/type";
+import { ZodError } from "zod";
 
 export const createCategory = asyncHandler(
   async (req: CustomRequest, res: Response) => {
@@ -12,7 +13,6 @@ export const createCategory = asyncHandler(
     if (!result.success) throw new AppError("Invalid input", 400);
 
     const userId = req.user!.userId;
-
     const category = await categoryService.createCategory(userId, result.data);
 
     return res
@@ -42,9 +42,15 @@ export const updateCategory = asyncHandler(
     const userId = req.user!.userId;
     const categoryId = req.params.id as string;
 
-    const category = await categoryService.updateCategory(categoryId, userId, result.data);
+    const category = await categoryService.updateCategory(
+      categoryId,
+      userId,
+      result.data,
+    );
 
-    return res.status(200).json({ success: true, data: category, message: "Category updated" })
+    return res
+      .status(200)
+      .json({ success: true, data: category, message: "Category updated" });
   },
 );
 

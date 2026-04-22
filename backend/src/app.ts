@@ -5,6 +5,7 @@ import { authMiddleware } from './middlewares/auth.middleware';
 import { errorHandler } from './middlewares/error.middleware';
 import authRoutes from './routes/auth.routes';
 import transactionRoutes from './routes/transaction.routes';
+import categoryRoutes from './routes/category.route';
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.get('/', (req: Request, res: Response) => {
 
 app.use('/auth', authRoutes);
 
+app.use('/categories', authMiddleware, categoryRoutes);
 app.use('/transactions', authMiddleware, transactionRoutes);
 
 app.use((req, res) => {
