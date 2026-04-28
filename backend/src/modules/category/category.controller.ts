@@ -4,7 +4,6 @@ import * as categoryService from "./category.service";
 import * as categorySchema from "./category.schema";
 import AppError from "../../utils/AppError";
 import { CustomRequest } from "../../lib/type";
-import { ZodError } from "zod";
 
 export const createCategory = asyncHandler(
   async (req: CustomRequest, res: Response) => {
